@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <style type="text/css" media="screen">
+            .panel { 
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                border: 2px solid #000000;
+                background: #ffffff;
+            }
+        </style>
+    </head>
+<body style="background-color:#777777;">
+
+<div class="panel" id="editor" style="width:50%; height:100%; float:right">mymaterial = new THREE.MeshPhongMaterial( {
+    color: 0xaaaaaa,
+    emissive: 0x222222,
+    side: THREE.DoubleSide,
+    flatShading: true
+} );
+for (var i=0; i<6; i+=1)
+{
+    var cube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), mymaterial);
+    cube.scale.set(.5,.5,2);
+    cube.translateX(i);
+    mesh.add( cube );
+}
+mesh.translateX(-2.5);
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    ace.require("ace/ext/language_tools");
+    //editor.setTheme("ace/theme/monokai");
+    editor.setTheme("ace/theme/tomorrow");
+    editor.session.setMode("ace/mode/javascript");
+        editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableLiveAutocompletion: true,
+        fontSize: "11pt"
+    });
+</script>
+                   
+
+<div class="panel" style="width:50%; height:50%; float:left" id="container">
+</div>
+
+<div class="panel" style="width:50%; height:50%; float:left">
+    <button type="button" OnClick="Update()">Update</button>
+    <button type="button" OnClick="exportToObj()">Export</button>
+</div>
+
+<!-- make sure this is just below the closing </body> tag -->
+<!-- for some reason the latest three.js doesn't work, so we use the one from the example file-->
+<script type="text/javascript" src="js/three.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.3/dat.gui.min.js"></script>
+<script type="text/javascript" src="js/TrackballControls.js"></script>
+<script type="text/javascript" src="js/Detector.js"></script>
+<script type="text/javascript" src="js/OBJExporter.js"></script>
+<script type="text/javascript" src="js/scene.js"></script> 
+
+<script>
+
+function Update() {
+    const editor = ace.edit("editor");
+    const code = editor.getValue();
+    //console.log(document.getElementById("editor"))
+    //code = document.getElementById("editor").value;
+    SetGeometry(code);
+}
+Update();
+
+
+function save( blob, filename )
+{
+	var link = document.createElement( 'a' );
+	link.style.display = 'none';
+	document.body.appendChild( link ); // Firefox workaround, see #6594
+
+    link.href = URL.createObjectURL( blob );
+    link.download = filename;
+    link.click();
+    // URL.revokeObjectURL( url ); breaks Firefox...
+}
+function saveString( text, filename )
+{
+	save( new Blob( [ text ], { type: 'text/plain' } ), filename );
+}
+function exportToObj()
+{
+    var exporter = new THREE.OBJExporter();
+    var result = exporter.parse( mesh );
+    saveString( result, 'model.obj' );
+}
+</script>
+
+</body>
+</html>
