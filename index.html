@@ -1,18 +1,149 @@
 <html>
     <head>
-        <style type="text/css" media="screen">
-            .panel { 
-                box-sizing: border-box;
-                -moz-box-sizing: border-box;
-                -webkit-box-sizing: border-box;
-                border: 2px solid #000000;
-                background: #ffffff;
-            }
-        </style>
-    </head>
-<body style="background-color:#777777;">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<div class="panel" id="editor" style="width:50%; height:100%; float:right">mymaterial = new THREE.MeshPhongMaterial( {
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+        <link rel="stylesheet" href="style.css">
+  
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+
+
+        <script>
+
+        // callbacks fro menubar
+        $(function() {
+            $('.dropdown.item')
+              .dropdown();
+          });
+          
+          function SetExample(str)
+          {
+            editor.session.setValue(str);
+            UpdateScene();
+          }
+
+          function SetExample1()
+          {
+              var str = `mymaterial = new THREE.MeshPhongMaterial( {
+    color: 0xaaaaaa,
+    emissive: 0x222222,
+    side: THREE.DoubleSide,
+    flatShading: true
+} );
+for (var i=0; i<6; i+=1)
+{
+    var cube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), mymaterial);
+    cube.scale.set(.5,.5,2);
+    cube.translateX(i);
+    mesh.add( cube );
+}
+mesh.translateX(-2.5);`;
+            SetExample(str);
+          }
+
+          function SetExample2()
+          {
+              var str = `mymaterial = new THREE.MeshPhongMaterial( {
+    color: 0x449911,
+    emissive: 0x222222,
+    side: THREE.DoubleSide,
+    flatShading: true
+} );
+for (var i=0; i<6; i+=1)
+{
+    var cube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), mymaterial);
+    cube.scale.set(.5,.5,2);
+    cube.translateX(i);
+    mesh.add( cube );
+}
+mesh.translateX(-2.5);`;
+            SetExample(str);
+          }
+          function initCallbacks()
+          {
+              var updateScene = document.getElementById("update");
+              updateScene.onclick = UpdateScene;
+              var exportScene = document.getElementById("export");
+              exportScene.onclick = exportToObj;
+
+              var example1 = document.getElementById("example1");
+              example1.onclick = SetExample1;
+
+              var example2 = document.getElementById("example2");
+              example2.onclick = SetExample2;
+          };
+
+          var editor;
+          function initEditor()
+          {
+            editor = ace.edit("editor");
+            ace.require("ace/ext/language_tools");
+            //editor.setTheme("ace/theme/monokai");
+            editor.setTheme("ace/theme/tomorrow");
+            editor.session.setMode("ace/mode/javascript");
+                editor.setOptions({
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                fontSize: "11pt"
+            });
+          }
+
+          function init()
+          {
+            initCallbacks();
+            initEditor();
+          }
+
+        </script>
+
+    </head>
+<body onload="init();">
+
+
+    <div class="ui top icon menu main">
+        <div class="item" style="background:#878787;">
+          <div class="ui avatar image">
+            <img src="https://picsum.photos/460">
+          </div>
+          <div class="content">
+            <div class="header">
+              3D scripting
+            </div>
+          </div>
+        </div>
+
+    
+        <div class="left menu primary" style="background:#dcdcdc;">
+          <a class="item" id="update">
+            <span>Update (Ctrl+m)</span>
+          </a>
+          <a class="item" id="export">
+            <span>Export</span>
+          </a>
+          <a class="ui dropdown item">
+            Examples
+            <i class="angle down icon"></i>
+            <div class="inverted menu">
+              <div class="item" id="example1">
+                Cubes
+              </div>
+              <div class="item" id="example2">
+                Cubes 2
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    <div class="container">
+
+
+
+<div class="panel" id="editor" style="width:48%; height:100%; float:left">mymaterial = new THREE.MeshPhongMaterial( {
     color: 0xaaaaaa,
     emissive: 0x222222,
     side: THREE.DoubleSide,
@@ -27,32 +158,16 @@ for (var i=0; i<6; i+=1)
 }
 mesh.translateX(-2.5);
 </div>
+
+
+<div class="panel" style="width:49%; height:100%; float:right" id="container">
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
-<script>
-    var editor = ace.edit("editor");
-    ace.require("ace/ext/language_tools");
-    //editor.setTheme("ace/theme/monokai");
-    editor.setTheme("ace/theme/tomorrow");
-    editor.session.setMode("ace/mode/javascript");
-        editor.setOptions({
-        enableBasicAutocompletion: true,
-        enableLiveAutocompletion: true,
-        fontSize: "11pt"
-    });
-</script>
-                   
-
-<div class="panel" style="width:50%; height:50%; float:left" id="container">
 </div>
 
-<div class="panel" style="width:50%; height:50%; float:left">
-    <button type="button" OnClick="Update()">Update</button>
-    <button type="button" OnClick="exportToObj()">Export</button>
-</div>
+</body>
 
+        
 <!-- make sure this is just below the closing </body> tag -->
 <!-- for some reason the latest three.js doesn't work, so we use the one from the example file-->
 <script type="text/javascript" src="js/three.min.js"></script>
@@ -62,41 +177,45 @@ mesh.translateX(-2.5);
 <script type="text/javascript" src="js/Detector.js"></script>
 <script type="text/javascript" src="js/OBJExporter.js"></script>
 <script type="text/javascript" src="js/scene.js"></script> 
-
 <script>
 
-function Update() {
-    const editor = ace.edit("editor");
-    const code = editor.getValue();
-    //console.log(document.getElementById("editor"))
-    //code = document.getElementById("editor").value;
-    SetGeometry(code);
+function KeyDown(e) {
+    var evtobj = window.event? event : e
+    if (evtobj.keyCode == 77 && evtobj.ctrlKey) UpdateScene(); // Ctrl-m
 }
-Update();
+document.onkeydown = KeyDown;
+
+function UpdateScene() {
+            const editor = ace.edit("editor");
+            const code = editor.getValue();
+            //console.log(document.getElementById("editor"))
+            //code = document.getElementById("editor").value;
+            SetGeometry(code);
+        }
+        UpdateScene();
 
 
-function save( blob, filename )
-{
-	var link = document.createElement( 'a' );
-	link.style.display = 'none';
-	document.body.appendChild( link ); // Firefox workaround, see #6594
+        function save( blob, filename )
+        {
+            var link = document.createElement( 'a' );
+            link.style.display = 'none';
+            document.body.appendChild( link ); // Firefox workaround, see #6594
 
-    link.href = URL.createObjectURL( blob );
-    link.download = filename;
-    link.click();
-    // URL.revokeObjectURL( url ); breaks Firefox...
-}
-function saveString( text, filename )
-{
-	save( new Blob( [ text ], { type: 'text/plain' } ), filename );
-}
-function exportToObj()
-{
-    var exporter = new THREE.OBJExporter();
-    var result = exporter.parse( mesh );
-    saveString( result, 'model.obj' );
-}
+            link.href = URL.createObjectURL( blob );
+            link.download = filename;
+            link.click();
+            // URL.revokeObjectURL( url ); breaks Firefox...
+        }
+        function saveString( text, filename )
+        {
+            save( new Blob( [ text ], { type: 'text/plain' } ), filename );
+        }
+        function exportToObj()
+        {
+            var exporter = new THREE.OBJExporter();
+            var result = exporter.parse( mesh );
+            saveString( result, 'model.obj' );
+        }
+
 </script>
-
-</body>
 </html>

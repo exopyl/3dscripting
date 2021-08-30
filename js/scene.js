@@ -28,10 +28,10 @@ var cameraControls = new THREE.TrackballControls(camera, renderer.domElement);
 cameraControls.target.set(0, 0, 0);
 
 var scene = new THREE.Scene();
-scene.background = new THREE.Color( 0x4271AE  );
+scene.background = new THREE.Color( 0xffffff  );
 
 // light on the camera
-pointLight = new THREE.PointLight( 0xffffff );
+pointLight = new THREE.PointLight( 0xdddddd );
 pointLight.position.set(0, 0, 0);
 camera.add(pointLight);
 scene.add(camera);
