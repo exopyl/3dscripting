@@ -103,6 +103,7 @@ mesh.translateX(-2.5);`;
     </head>
 <body onload="init();">
 
+  <header>
 
     <div class="ui top icon menu main">
         <div class="item" style="background:#878787;">
@@ -139,31 +140,30 @@ mesh.translateX(-2.5);`;
 
         </div>
       </div>
-    <div class="container">
+
+    </header>
+
+
+<div id="main">
 
 
 
-<div class="panel" id="editor" style="width:48%; height:100%; float:left">mymaterial = new THREE.MeshPhongMaterial( {
-    color: 0xaaaaaa,
-    emissive: 0x222222,
-    side: THREE.DoubleSide,
-    flatShading: true
+
+<article class="panel" id="editor">mymaterial = new THREE.MeshPhongMaterial( {
+  color: 0xaaaaaa,
+  emissive: 0x222222,
+  side: THREE.DoubleSide,
+  flatShading: true
 } );
-for (var i=0; i<6; i+=1)
-{
-    var cube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), mymaterial);
-    cube.scale.set(.5,.5,2);
-    cube.translateX(i);
-    mesh.add( cube );
-}
-mesh.translateX(-2.5);
-</div>
+
+var cube = new THREE.Mesh(new THREE.BoxGeometry(1), mymaterial);
+mesh.add( cube );
+</article>
+
+<aside class="panel" id="container"></aside>
 
 
-<div class="panel" style="width:49%; height:100%; float:right" id="container">
-</div>
-
-</div>
+</div> <!-- main -->
 
 </body>
 
@@ -185,37 +185,37 @@ function KeyDown(e) {
 }
 document.onkeydown = KeyDown;
 
-function UpdateScene() {
-            const editor = ace.edit("editor");
-            const code = editor.getValue();
-            //console.log(document.getElementById("editor"))
-            //code = document.getElementById("editor").value;
-            SetGeometry(code);
-        }
-        UpdateScene();
+function UpdateScene()
+{
+    const editor = ace.edit("editor");
+    const code = editor.getValue();
+    //console.log(document.getElementById("editor"))
+    //code = document.getElementById("editor").value;
+    SetGeometry(code);
+}
+function save( blob, filename )
+{
+    var link = document.createElement( 'a' );
+    link.style.display = 'none';
+    document.body.appendChild( link ); // Firefox workaround, see #6594
 
+    link.href = URL.createObjectURL( blob );
+    link.download = filename;
+    link.click();
+    // URL.revokeObjectURL( url ); breaks Firefox...
+}
+function saveString( text, filename )
+{
+    save( new Blob( [ text ], { type: 'text/plain' } ), filename );
+}
+function exportToObj()
+{
+    var exporter = new THREE.OBJExporter();
+    var result = exporter.parse( mesh );
+    saveString( result, 'model.obj' );
+}
+UpdateScene();
 
-        function save( blob, filename )
-        {
-            var link = document.createElement( 'a' );
-            link.style.display = 'none';
-            document.body.appendChild( link ); // Firefox workaround, see #6594
-
-            link.href = URL.createObjectURL( blob );
-            link.download = filename;
-            link.click();
-            // URL.revokeObjectURL( url ); breaks Firefox...
-        }
-        function saveString( text, filename )
-        {
-            save( new Blob( [ text ], { type: 'text/plain' } ), filename );
-        }
-        function exportToObj()
-        {
-            var exporter = new THREE.OBJExporter();
-            var result = exporter.parse( mesh );
-            saveString( result, 'model.obj' );
-        }
 
 </script>
 </html>

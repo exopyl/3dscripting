@@ -1,17 +1,32 @@
-body {
+* {
+    box-sizing: border-box; 
+  }
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
     background: gainsboro;
-}
+  }
+  #main {
+    display: flex;
+    flex: 1;
+  }
+  #main > article {
+    flex: 1;
+  }
+  #main > aside {
+    flex: 0 0 40vw;
+  }
+  header, footer {
+    flex: 0 1;
+    min-height: 55px;
+  }
 
-.container {
-    margin-left: 1rem;
-    margin-right: 1rem;
-    text-align: center;
-}
-
-.panel { 
-box-sizing: border-box;
--moz-box-sizing: border-box;
--webkit-box-sizing: border-box;
-border: 1px solid #000000;
-background: #ffffff;
-}
+  .panel { 
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px solid #000000;
+    background: #ffffff;
+    }
+    

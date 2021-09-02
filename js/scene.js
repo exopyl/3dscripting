@@ -18,6 +18,7 @@ function SetGeometry(code)
 const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
 const container = document.getElementById('container');
 
+console.log("Orig : " + container.clientWidth + " " + container.clientHeight)
 renderer.setSize(container.clientWidth, container.clientHeight);
 container.appendChild(renderer.domElement);
 
@@ -54,7 +55,7 @@ window.addEventListener( 'resize', onWindowResize, false );
 function onWindowResize(event)
 {
         Width = container.clientWidth;
-        Height = container.clientHeight;
+        Height = container.clientHeight-10;
         renderer.setSize(Width, Height);
         camera.aspect = Width / Height;
         camera.updateProjectionMatrix();
